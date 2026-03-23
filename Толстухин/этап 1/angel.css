@@ -22,37 +22,37 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-
-body {
-font-family: Arial, sans-serif;
-margin: 0;
-padding: 0;
-background-color: white;
-color: #333;
-display: flex;
-flex-direction: column;
-min-height: 100vh;
-align-items: center;
+body{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 header{
-
-}
-
-.container{
-
-}
-footer{
-    text-align: center;
-    padding: 1rem;
     background: #333;
     color: white;
+    text-align: center;
+    padding: 1rem;
     width: 100%;
-    margin-top: auto;
 }
-.from-container{
-    background-color: #333;
-    color: white;
-    cursor: pointer;
+.container{
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
+.text-block{
+    text-align: center;
+    padding: 10px;
+}
+
 
 
