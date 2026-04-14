@@ -817,6 +817,7 @@ element.removeAttribute("disabled")
 
 // Работа с классами (очень часто нужно!)
 element.classList.add("active")      // добавить класс
+element.className += 'new-class';    // альт путь добавления класса
 element.classList.remove("active")   // убрать класс
 element.classList.toggle("active")   // добавить, если нет / убрать, если есть
 
