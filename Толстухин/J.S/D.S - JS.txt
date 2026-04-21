@@ -840,3 +840,89 @@ allDivs.forEach(element => {
     element.textContent = "Обновлено!"     // меняем текст
     console.log(element.textContent)       // выводим в консоль
 })
+
+
+
+ПРИМЕР БАЗЫ ДАННЫХ
+const users = [
+    {
+        id: 1,
+        name: "Иванов",
+        email: "Ivanov@mail.ru",
+        age: 20
+    },
+    {
+        id: 2,
+        name: "Петров",
+        email: "Petrov@mail.ru",
+        age: 15
+    }
+]
+
+forEach или map - чтоб каждому что то применить
+
+const users = [
+    {
+        id: 1,
+        name: "Иванов",
+        email: "Ivanov@mail.ru",
+        age: 20
+    },
+    {
+        id: 2,
+        name: "Петров",
+        email: "Petrov@mail.ru",
+        age: 15
+    }
+]
+const products = [
+    {
+        id: 1,
+        name: "Хлеб",
+        price: 50
+    },
+    {
+        id: 2,
+        name: "Молоко",
+        price: 100
+    },
+]
+function fillTable(data) {
+    const thead = document.getElementById("thead")
+    const trHead = document.createElement("tr")
+     //получаем ключи нулевого индекса в массиве users [(id, name, email, age)]
+    const headers = Object.keys(data[0])
+    headers.forEach(header => {
+        const tdHead = document.createElement("td")
+        tdHead.textContent = header
+        trHead.append(tdHead)
+    })
+    thead.append(trHead)
+    const tbody = document.getElementById("tbody")
+    data.forEach(item => {
+        const trBody = document.createElement("tr")
+        headers.forEach(header => {
+            const tdBody = document.createElement("td")
+            tdBody.textContent = item[header]
+            trBody.append(tdBody)
+
+        })
+tbody.append(trBody)
+ })
+}
+fillTable(users);
+
+
+
+---------Проектирование ПО 
+
+Нотация - общеприн графич обозначение програмного продукта или его части
+Нотации:
+1. Блок-схема(работаем в MS visio) - Алогоритм выполнения функции или скрипта
+
+Основные компоненты:
+Начало, действие, ввод данных, условие, конец, 
+Пример: (составить алгоритм расчета скидок для клиентов. Если сумма выкупа у клиента более 100 000 - то скидка 5%,
+если сумма выкупа у клиента более 200 000 - то скидка 10%, если сумма выкупа у клиента более 300 000 - то скидка 30%)
+
+2. 
