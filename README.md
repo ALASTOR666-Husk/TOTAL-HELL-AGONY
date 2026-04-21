@@ -2,7 +2,7 @@
 2. BPMN строим в 
 https://online.visual-paradigm.com/app/diagrams/#diagram:proj=0&type=BusinessProcessDiagram&width=11&height=8.5&unit=inch
 VP Online - Online Drawing Tool
-VP Online is your all-in-one online drawing solution. Create professional flowcharts, UML diagrams, BPMN, ArchiMate, ER Diagrams, DFD, SWOT, Venn, org charts and mind map. Works cross-platforms: Ma...
+VP Online is your all-in-one online drawing solution. Create professional flowcharts, UML diagrams, BPMN, ArchiMate, ER Diagrams, DFD, SWOT, Venn, org charts and mind map. Works cross-platforms: Ma... <-----ТУТ СТРОИМ
 
 
 
