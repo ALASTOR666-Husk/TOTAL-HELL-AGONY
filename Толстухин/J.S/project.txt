@@ -1,0 +1,195 @@
+КАЛЬКУЛЯТОР
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бурда</title>
+</head>
+<body>
+    <div>
+        <h1>Вроде это калькулятор</h1>
+        <input type="number" id="num1" placeholder="Введите первое число">
+        <input type="number" id="num2" placeholder="Введите второе число">
+        <div>
+            <button data-op="+">+</button>
+            <button data-op="-">-</button>
+            <button data-op="*">*</button>
+            <button data-op="/">/</button>
+            <button data-op="%">%</button>
+            <button data-op="**">**</button>
+        </div>
+        <div id="result">TAKE THAT!!!: </div>
+    </div>
+
+    <script src="./PROG.js"></script>
+</body>
+</html>
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const num1Input = document.getElementById('num1');
+    const num2Input = document.getElementById('num2');
+    const resultDiv = document.getElementById('result');
+    const buttons = document.querySelectorAll('button[data-op]');
+
+    function calculate(operation) {
+    const val1 = parseFloat(num1Input.value);
+    const val2 = parseFloat(num2Input.value);
+        if (isNaN(val1) || isNaN(val2)) {
+            resultDiv.textContent = 'TAKE THAT!!!: Нужны числа, желательно 2';
+            return;
+        }
+    let result;
+        switch (operation) {
+            case '+':
+                result = val1 + val2;
+                break;
+            case '-':
+                result = val1 - val2;
+                break;
+            case '*':
+                result = val1 * val2;
+                break;
+            case '/':
+                if (val2 === 0) {
+                    resultDiv.textContent = 'НА НОЛЬ НЕ ДЕЛИМ!!!';
+                    return;
+                }
+                result = val1 / val2;
+                break;
+            case '%':
+                if (val2 === 0) {
+                    resultDiv.textContent = 'НА НОЛЬ НЕ ДЕЛИМ!!!';
+                    return;
+                }
+                result = val1 % val2;
+                break;
+            case '**':
+                result = Math.pow(val1, val2);
+                break;
+            default:
+                resultDiv.textContent = 'Не понятно';
+                return;
+        }
+    const formattedResult = Number.isInteger(result) ? result : parseFloat(result.toFixed(8));
+        resultDiv.textContent = `TAKE THAT!!!: ${formattedResult}`;
+    }
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+    const operation = button.getAttribute('data-op');
+            calculate(operation);
+        });
+    });
+});
+
+
+
+
+КРЕСТИКИ НОЛИКИ
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<link rel="stylesheet" href="./POLE.css">
+</head>
+<body>
+ <div class="board">
+ <div class="cell" data-index="0"></div>
+ <div class="cell" data-index="1"></div>
+ <div class="cell" data-index="2"></div>
+ <div class="cell" data-index="3"></div>
+ <div class="cell" data-index="4"></div>
+ <div class="cell" data-index="5"></div>
+ <div class="cell" data-index="6"></div>
+ <div class="cell" data-index="7"></div>
+ <div class="cell" data-index="8"></div>
+
+</div>
+
+ <script src="./sas.js"></script>
+</body>
+</html>
+
+.board {
+display: grid;
+grid-template-columns: 100px 100px 100px;
+grid-template-rows: 100px 100px 100px;
+justify-content: center;
+gap: 35px;
+}
+.cell{
+    border: 3px solid #ff0000;
+}
+body{
+    background-color: blue;
+}
+
+
+let currentPlayer = "X";
+let gameOver = false; 
+let boards = ['', '', '', '', '', '', '', '', '']; 
+const winPatterns = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8], 
+    [0, 3, 6],
+    [1, 4, 7], 
+    [2, 5, 8],
+    [0, 4, 8], 
+    [2, 4, 6]             
+];
+const cells = document.querySelectorAll(".cell");
+cells.forEach(cell => {
+    cell.addEventListener('click', handleClick);
+});
+function handleClick(event) {
+    const index = event.target.getAttribute('data-index');
+    
+    if (boards[index] === '' && !gameOver) {
+        boards[index] = currentPlayer;
+        event.target.textContent = currentPlayer;
+        
+        if (checkWin()) {
+            alert('Победил ' + currentPlayer + '! '); 
+            gameOver = true;
+        }
+        else if (nichya()) {
+            alert('Ничья! ');
+            gameOver = true;
+        }
+        else {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+    }
+}
+function checkWin() {
+    for (let pattern of winPatterns) {
+        if (boards[pattern[0]] === currentPlayer && 
+            boards[pattern[1]] === currentPlayer && 
+            boards[pattern[2]] === currentPlayer) {
+            return true;
+        }
+    }
+    return false;
+}
+function nichya() {
+    return boards.every(cell => cell !== '');
+}
+function resetGame() {
+    boards = ['', '', '', '', '', '', '', '', ''];
+    cells.forEach(cell => {
+        cell.textContent = '';              
+        cell.classList.remove('winner');    
+    });
+    currentPlayer = 'X';
+    gameOver = false;
+}
+const resetBtn = document.querySelector('#resetBtn'); 
+if (resetBtn) {
+    resetBtn.addEventListener('click', resetGame);
+}
