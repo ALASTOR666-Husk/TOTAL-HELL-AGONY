@@ -10,4 +10,6 @@ VP Online is your all-in-one online drawing solution. Create professional flowch
 https://practicum.yandex.ru/blog/notaciya-bpmn-dlya-biznes-processov/
 Нотация BPMN 2.0: элементы, преимущества - построение модели бизнес-процессов, примеры
 Описание нотации BPMN 2.0, её ключевых элементов, преимуществ использования, примеры диаграмм. Расскажем, как построить модели бизнес-процесса с помощью BPMN и как можно применять данные в бизнес-а...
- 
+
+
+ https://app.diagrams.net/
