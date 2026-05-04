@@ -1,0 +1,17 @@
+.carousel {
+width: 300px;
+margin: auto;
+text-align: center;
+}
+.carousel img {
+max-width: 100%;
+height: auto;
+}
+.controls button {
+margin: 10px;
+}
+.buy{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
