@@ -1,49 +1,70 @@
 flowchart TD
-  classDef startEnd fill:#90EE90,stroke:#333,stroke-width:2px;
-  classDef task fill:#FFE4B5,stroke:#333,stroke-width:2px;
-  classDef gateway fill:#FFD700,stroke:#333,stroke-width:2px,rx:50%;
-  classDef admin fill:#ADD8E6,stroke:#333,stroke-width:2px;
+    %% Стилизация
+    classDef startend fill:#90EE90,stroke:#333,stroke-width:2px;
+    classDef task fill:#E1F5FE,stroke:#0277BD,stroke-width:2px;
+    classDef gateway fill:#FFF9C4,stroke:#FBC02D,stroke-width:2px,rx:50%;
+    classDef admin fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px;
+    classDef timer stroke:#FF5722,stroke-dasharray: 5 5;
 
-  Start((🟢 Начало)):::startEnd
-  T1[Выбрать напиток/десерт]:::task
-  T2[Сообщить заказ бариста]:::task
-  T3[Оплатить заказ]:::task
-  
-  B1[Зарегистрировать заказ в POS]:::task
-  B2[Назвать сумму]:::task
-  G1{Способ оплаты?}:::gateway
-  B3a[Принять наличные, выдать сдачу]:::task
-  B3b[Провести оплату через терминал]:::task
-  B4[Проверить наличие ингредиентов]:::task
-  G2{Ингредиенты есть?}:::gateway
-  B5[Предложить замену]:::task
-  G3{Согласен на замену?}:::gateway
-  B6[Изменить рецепт в POS]:::task
-  B7[Приготовить напиток<br><i>[Множественный экземпляр]</i>]:::task
-  B8[Передать напиток и чек]:::task
-  B9[Отменить заказ / Вернуть деньги]:::task
-  EndCancel((🔴 Заказ отменён)):::startEnd
+    subgraph Pool_CoffeeShop [Процесс обслуживания в кофейне]
+        direction TB
+        
+        subgraph Lane_Visitor [Посетитель]
+            Start((Начало)):::startend
+            T_Choose[Выбрать напиток/десерт]:::task
+            T_Order[Сообщить заказ]:::task
+            T_Pay[Оплатить заказ]:::task
+            T_DecideSub[Решить: согласен на замену?]:::task
+            T_Receive[Получить напиток и чек]:::task
+            T_ComplainCheck{Жалоба на качество?}:::gateway
+            End_Success((Ушел довольным)):::startend
+        end
 
-  A1[🔹 Активировать бонус за ожидание]:::admin
-  A2[🔹 Рассмотреть жалобу]:::admin
-  A3[🔹 Принять решение: замена или возврат]:::admin
-  EndResolved((🔵 Спор разрешён)):::startEnd
+        subgraph Lane_Barista [Бариста]
+            T_Register[Регистрация в POS]:::task
+            T_Announce[Назвать сумму и время]:::task
+            T_CheckIng[Проверить ингредиенты]:::task
+            G_IngCheck{Есть в наличии?}:::gateway
+            T_OfferSub[Предложить замену]:::task
+            T_ChangeRecipe[Изменить рецепт]:::task
+            T_Prepare[Приготовить напиток<br/>*(Параллельно)*]:::task
+            T_HandOver[Передать напиток]:::task
+            T_Cancel[Отмена и возврат денег]:::task
+            End_Cancel((Заказ отменен)):::startend
+            T_MakeNew[Приготовить замену бесплатно]:::task
+        end
 
-  T4[Получить напиток и чек]:::task
-  T5[Оценить качество до первого глотка]:::task
-  G4{Жалоба на качество?}:::gateway
-  EndDone((🟢 Посетитель уходит)):::startEnd
+        subgraph Lane_Admin [Администратор]
+            T_Bonus[Выдать бонус за ожидание]:::admin
+            T_Resolve[Рассмотреть жалобу]:::admin
+            G_ResolveDecision{Решение}:::gateway
+            T_RefundQuality[Возврат денег]:::admin
+            End_Refund((Возврат выполнен)):::startend
+        end
+    end
 
-  Start --> T1 --> T2 --> B1 --> B2 --> T3
-  T3 --> G1
-  G1 -->|Наличные| B3a --> B4
-  G1 -->|Карта| B3b --> B4
-  B4 --> G2
-  G2 -->|Да| B7
-  G2 -->|Нет| B5 --> G3
-  G3 -->|Да| B6 --> B7
-  G3 -->|Нет| B9 --> EndCancel
-  B7 -.->|⏱ Таймер >5 мин| A1
-  B7 --> B8 --> T4 --> T5 --> G4
-  G4 -->|Да| A2 --> A3 --> EndResolved
-  G4 -->|Нет| EndDone
+    %% Связи
+    Start --> T_Choose --> T_Order --> T_Register --> T_Announce --> T_Pay
+    T_Pay --> T_CheckIng --> G_IngCheck
+    
+    %% Ветвление ингредиентов
+    G_IngCheck -- Да --> T_Prepare
+    G_IngCheck -- Нет --> T_OfferSub --> T_DecideSub
+    T_DecideSub -- Да --> T_ChangeRecipe --> T_Prepare
+    T_DecideSub -- Нет --> T_Cancel --> End_Cancel
+
+    %% Таймер и бонус
+    T_Prepare -.->|Таймер > 5 мин| T_Bonus
+    T_Bonus --> End_Success_Bonus((Бонус выдан)):::startend
+
+    %% Выдача и качество
+    T_Prepare --> T_HandOver --> T_Receive --> T_ComplainCheck
+    
+    T_ComplainCheck -- Нет --> End_Success
+    T_ComplainCheck -- Да --> T_Resolve --> G_ResolveDecision
+    
+    G_ResolveDecision -- Замена --> T_MakeNew --> T_HandOver
+    G_ResolveDecision -- Возврат --> T_RefundQuality --> End_Refund
+
+    %% Стилизация таймера
+    linkStyle 14 stroke:#FF5722,stroke-width:2px,stroke-dasharray: 5 5;
