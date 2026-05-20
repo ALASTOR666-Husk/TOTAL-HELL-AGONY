@@ -21,3 +21,31 @@ https://practicum.yandex.ru/blog/notaciya-bpmn-dlya-biznes-processov/
 
 
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бурда</title>
+</head>
+<body>
+    <div>
+        <h1>Вроде это калькулятор</h1>
+        <input type="number" id="num1" placeholder="Введите первое число">
+        <input type="number" id="num2" placeholder="Введите второе число">
+        <div>
+            <button data-op="+">+</button>
+            <button data-op="-">-</button>
+            <button data-op="*">*</button>
+            <button data-op="/">/</button>
+            <button data-op="%">%</button>
+            <button data-op="**">**</button>
+        </div>
+        <div id="result">TAKE THAT!!!: </div>
+    </div>
+
+    <script src="./WORK.js"></script>
+</body>
+</html>
+
+
